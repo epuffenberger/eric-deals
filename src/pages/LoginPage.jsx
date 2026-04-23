@@ -5,13 +5,14 @@ export default function LoginPage({ onLogin }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    const success = await onLogin(password);
-    if (!success) {
+    if (password === 'Toledo2026') {
+      onLogin();
+    } else {
       setError('Invalid password');
       setPassword('');
     }
