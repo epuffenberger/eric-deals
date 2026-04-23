@@ -1,59 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { auth } from './firebase';
-import { signInAnonymously, signOut, onAuthStateChanged, updateProfile } from 'firebase/auth';
+import React, { useState } from 'react';
 import AdminDashboard from './pages/AdminDashboard';
 import ClientDashboard from './pages/ClientDashboard';
 import LoginPage from './pages/LoginPage';
 import './App.css';
 
 export default function App() {
-  const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
-    return unsubscribe;
-  }, []);
-
-  const handleLogin = async (password) => {
-    if (password === 'Toledo2026') {
-      try {
-        const result = await signInAnonymously(auth);
-        await updateProfile(result.user, { displayName: 'Client' });
-        return true;
-      } catch (error) {
-        console.error('Login error:', error);
-        return false;
-      }
-    }
-    return false;
+  const handleLogin = () => {
+    setIsLoggedIn(true);
   };
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      setIsAdmin(false);
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setIsAdmin(false);
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-[#1a472a]">
-        <div className="text-center">
-          <div className="text-4xl font-bold text-[#ffd700] mb-2">ERIC'S DEALS</div>
-          <div className="text-[#ffd700]">Loading...</div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
+  if (!isLoggedIn) {
     return <LoginPage onLogin={handleLogin} />;
   }
 
