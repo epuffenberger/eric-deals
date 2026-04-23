@@ -1,25 +1,10 @@
 import React, { useState } from 'react';
 import AdminDashboard from './pages/AdminDashboard';
 import ClientDashboard from './pages/ClientDashboard';
-import LoginPage from './pages/LoginPage';
 import './App.css';
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setIsAdmin(false);
-  };
-
-  if (!isLoggedIn) {
-    return <LoginPage onLogin={handleLogin} />;
-  }
 
   return (
     <div className="min-h-screen bg-[#1a472a]">
@@ -33,12 +18,6 @@ export default function App() {
               className="text-[#ffd700] hover:text-white font-bold transition px-3 py-1 border border-[#ffd700] rounded hover:bg-[#ffd700] hover:text-[#0d2618]"
             >
               {isAdmin ? 'View as Client' : 'Admin'}
-            </button>
-            <button
-              onClick={handleLogout}
-              className="text-[#ffd700] hover:text-white font-bold transition px-3 py-1 border border-[#ffd700] rounded hover:bg-[#ffd700] hover:text-[#0d2618]"
-            >
-              Logout
             </button>
           </div>
         </div>
