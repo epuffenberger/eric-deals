@@ -4,7 +4,7 @@ import { collection, addDoc, onSnapshot, deleteDoc, doc, query, orderBy } from '
 import PropertyCard from '../components/PropertyCard';
 import { Upload } from 'lucide-react';
 
-const COLORS = ['lightblue', 'brown', 'purple', 'orange', 'red', 'yellow', 'green', 'darkblue'];
+const COLORS = ['blue', 'emerald'];
 
 export default function AdminDashboard() {
   const [properties, setProperties] = useState([]);
@@ -17,7 +17,7 @@ export default function AdminDashboard() {
     rentRate: '',
     taxes: '',
     notes: '',
-    color: 'lightblue'
+    type: 'single-family',
   });
   const [loading, setLoading] = useState(false);
   const [csvMessage, setCsvMessage] = useState('');
@@ -56,7 +56,7 @@ export default function AdminDashboard() {
         rentRate: formData.rentRate,
         taxes: parseInt(formData.taxes) || 0,
         notes: formData.notes,
-        color: formData.color,
+        type: formData.type,
         createdAt: new Date()
       });
 
@@ -69,9 +69,9 @@ export default function AdminDashboard() {
         rentRate: '',
         taxes: '',
         notes: '',
-        color: 'lightblue'
+        type: 'single-family',
       });
-      setCsvMessage('Property added successfully!');
+      setCsvMessage('✓ Property added successfully!');
       setTimeout(() => setCsvMessage(''), 3000);
     } catch (error) {
       console.error('Error adding property:', error);
@@ -117,7 +117,7 @@ export default function AdminDashboard() {
             rentRate: values[headers.indexOf('rentrate')] || values[headers.indexOf('rent rate')] || '',
             taxes: parseInt(values[headers.indexOf('taxes')]) || 0,
             notes: values[headers.indexOf('notes')] || '',
-            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            type: values[headers.indexOf('type')] === 'multifamily' ? 'multifamily' : 'single-family',
             createdAt: new Date()
           };
 
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
         setTimeout(() => setCsvMessage(''), 4000);
         e.target.value = '';
       } catch (error) {
-        setCsvMessage('Error parsing CSV. Format: address,beds,baths,sqft,price,rentrate,taxes,notes');
+        setCsvMessage('Error parsing CSV. Format: address,beds,baths,sqft,price,rentrate,taxes,type,notes');
         console.error('CSV Error:', error);
       }
     };
@@ -138,148 +138,154 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <div className="mb-8 bg-[#0d2618] border-4 border-[#ffd700] rounded-lg p-6">
-        <h2 className="text-2xl font-bold text-[#ffd700] mb-6">Add New Property</h2>
+    <div className="bg-gray-50 min-h-screen py-12">
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Add Property Section */}
+        <div className="bg-white rounded-lg border border-gray-200 p-8 mb-12">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Add New Property</h2>
 
-        <form onSubmit={handleAddProperty} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <input
-            type="text"
-            name="address"
-            placeholder="Street Address"
-            value={formData.address}
-            onChange={handleInputChange}
-            className="px-3 py-2 border-2 border-[#ffd700] bg-white text-black rounded font-bold"
-            required
-          />
-
-          <input
-            type="number"
-            name="beds"
-            placeholder="Bedrooms"
-            value={formData.beds}
-            onChange={handleInputChange}
-            className="px-3 py-2 border-2 border-[#ffd700] bg-white text-black rounded font-bold"
-          />
-
-          <input
-            type="number"
-            name="baths"
-            placeholder="Bathrooms"
-            value={formData.baths}
-            onChange={handleInputChange}
-            className="px-3 py-2 border-2 border-[#ffd700] bg-white text-black rounded font-bold"
-          />
-
-          <input
-            type="number"
-            name="sqft"
-            placeholder="Square Footage"
-            value={formData.sqft}
-            onChange={handleInputChange}
-            className="px-3 py-2 border-2 border-[#ffd700] bg-white text-black rounded font-bold"
-          />
-
-          <input
-            type="number"
-            name="price"
-            placeholder="Price"
-            value={formData.price}
-            onChange={handleInputChange}
-            className="px-3 py-2 border-2 border-[#ffd700] bg-white text-black rounded font-bold"
-          />
-
-          <input
-            type="text"
-            name="rentRate"
-            placeholder="Monthly Rent Rate"
-            value={formData.rentRate}
-            onChange={handleInputChange}
-            className="px-3 py-2 border-2 border-[#ffd700] bg-white text-black rounded font-bold"
-          />
-
-          <input
-            type="number"
-            name="taxes"
-            placeholder="Annual Property Taxes"
-            value={formData.taxes}
-            onChange={handleInputChange}
-            className="px-3 py-2 border-2 border-[#ffd700] bg-white text-black rounded font-bold"
-          />
-
-          <select
-            name="color"
-            value={formData.color}
-            onChange={handleInputChange}
-            className="px-3 py-2 border-2 border-[#ffd700] bg-white text-black rounded font-bold"
-          >
-            {COLORS.map(color => (
-              <option key={color} value={color}>{color.charAt(0).toUpperCase() + color.slice(1)}</option>
-            ))}
-          </select>
-
-          <textarea
-            name="notes"
-            placeholder="Your notes about this property"
-            value={formData.notes}
-            onChange={handleInputChange}
-            className="px-3 py-2 border-2 border-[#ffd700] bg-white text-black rounded font-bold md:col-span-2"
-            rows="2"
-          />
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="md:col-span-2 bg-[#ffd700] text-[#0d2618] font-bold py-3 rounded border-2 border-[#ffd700] hover:bg-white transition disabled:opacity-50 cursor-pointer"
-          >
-            {loading ? 'Adding...' : 'Add Property'}
-          </button>
-        </form>
-
-        <div className="border-t-2 border-[#ffd700] pt-6">
-          <h3 className="text-xl font-bold text-[#ffd700] mb-4">Import from CSV (MLS)</h3>
-          <div className="flex items-center gap-4 flex-wrap">
-            <label className="flex items-center gap-2 px-4 py-2 bg-[#ffd700] text-[#0d2618] font-bold rounded border-2 border-[#ffd700] cursor-pointer hover:bg-white transition">
-              <Upload size={20} />
-              Choose CSV File
+          <form onSubmit={handleAddProperty} className="space-y-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <input
-                type="file"
-                accept=".csv"
-                onChange={handleCSVUpload}
-                className="hidden"
+                type="text"
+                name="address"
+                placeholder="Street Address"
+                value={formData.address}
+                onChange={handleInputChange}
+                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
-            </label>
-            <span className="text-[#ffd700] text-sm">Format: address,beds,baths,sqft,price,rentrate,taxes,notes</span>
+
+              <select
+                name="type"
+                value={formData.type}
+                onChange={handleInputChange}
+                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="single-family">Single Family</option>
+                <option value="multifamily">Multifamily</option>
+              </select>
+
+              <input
+                type="number"
+                name="beds"
+                placeholder="Bedrooms"
+                value={formData.beds}
+                onChange={handleInputChange}
+                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+
+              <input
+                type="number"
+                name="baths"
+                placeholder="Bathrooms"
+                value={formData.baths}
+                onChange={handleInputChange}
+                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+
+              <input
+                type="number"
+                name="sqft"
+                placeholder="Square Footage"
+                value={formData.sqft}
+                onChange={handleInputChange}
+                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+
+              <input
+                type="number"
+                name="price"
+                placeholder="Price"
+                value={formData.price}
+                onChange={handleInputChange}
+                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+
+              <input
+                type="text"
+                name="rentRate"
+                placeholder="Monthly Rent Rate"
+                value={formData.rentRate}
+                onChange={handleInputChange}
+                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+
+              <input
+                type="number"
+                name="taxes"
+                placeholder="Annual Property Taxes"
+                value={formData.taxes}
+                onChange={handleInputChange}
+                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <textarea
+              name="notes"
+              placeholder="Your notes about this property"
+              value={formData.notes}
+              onChange={handleInputChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows="3"
+            />
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 px-4 rounded-lg font-medium text-white transition disabled:opacity-50"
+              style={{ backgroundColor: '#001a4a' }}
+            >
+              {loading ? 'Adding...' : 'Add Property'}
+            </button>
+          </form>
+
+          {/* CSV Upload */}
+          <div className="border-t border-gray-200 pt-8">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Bulk Import from CSV</h3>
+            <div className="flex items-center gap-4">
+              <label className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-white cursor-pointer transition" style={{ backgroundColor: '#001a4a' }}>
+                <Upload size={18} />
+                Choose CSV File
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleCSVUpload}
+                  className="hidden"
+                />
+              </label>
+              <span className="text-sm text-gray-600">Format: address,beds,baths,sqft,price,rentrate,taxes,type,notes</span>
+            </div>
+            {csvMessage && (
+              <div className="mt-3 text-sm text-gray-700">
+                {csvMessage}
+              </div>
+            )}
           </div>
-          {csvMessage && (
-            <div className="mt-2 text-sm text-[#ffd700] font-bold">
-              {csvMessage}
+        </div>
+
+        {/* Properties List */}
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Current Properties ({properties.length})</h2>
+
+          {properties.length === 0 ? (
+            <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
+              <p className="text-gray-600">No properties yet. Add your first deal above!</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {properties.map(property => (
+                <PropertyCard
+                  key={property.id}
+                  property={property}
+                  onDelete={handleDeleteProperty}
+                  isAdmin={true}
+                />
+              ))}
             </div>
           )}
         </div>
       </div>
-
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-[#ffd700] mb-4">Current Properties ({properties.length})</h2>
-      </div>
-
-      {properties.length === 0 ? (
-        <div className="bg-[#0d2618] border-4 border-[#ffd700] rounded-lg p-8 text-center">
-          <p className="text-[#ffd700] text-lg font-bold">No properties yet. Add your first deal above!</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {properties.map(property => (
-            <div key={property.id} className="flex justify-center">
-              <PropertyCard
-                property={property}
-                onDelete={handleDeleteProperty}
-                isAdmin={true}
-              />
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 }
