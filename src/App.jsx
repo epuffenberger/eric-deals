@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import LandingPage from './pages/LandingPage';
 import AdminDashboard from './pages/AdminDashboard';
 import ClientDashboard from './pages/ClientDashboard';
@@ -8,14 +8,16 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-        setIsAdmin(prev => !prev);
-      }
-    };
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
+  const handleKeyDown = (e) => {
+    if (e.ctrlKey && e.key === 'a') {
+      e.preventDefault();
+      setIsAdmin(prev => !prev);
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const handleLogin = () => {
