@@ -22,27 +22,84 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-semibold" style={{ color: '#001a4a' }}>Eric's Deals</h1>
-          <div className="flex items-center gap-4">
-            {isAdmin && <span className="text-xs font-medium px-3 py-1 bg-blue-50 text-blue-700 rounded">Admin Mode</span>}
+    <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
+      <nav style={{
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid #e5e7eb',
+        position: 'sticky',
+        top: 0,
+        zIndex: 50
+      }}>
+        <div style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: '1rem 1.5rem',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <h1 style={{
+            fontSize: '1.25rem',
+            fontWeight: 600,
+            color: '#001a4a',
+            margin: 0
+          }}>
+            Eric's Deals
+          </h1>
+          
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            {isAdmin && (
+              <span style={{
+                fontSize: '12px',
+                fontWeight: 500,
+                padding: '0.5rem 0.75rem',
+                backgroundColor: '#dbeafe',
+                color: '#0052cc',
+                borderRadius: '4px'
+              }}>
+                Admin Mode
+              </span>
+            )}
+            
             <button
               onClick={() => setIsAdmin(!isAdmin)}
-              className="text-sm font-medium px-4 py-2 rounded border border-gray-200 hover:bg-gray-50 transition"
+              style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                padding: '0.5rem 1rem',
+                backgroundColor: '#ffffff',
+                border: '1px solid #d1d5db',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#f3f4f6'}
+              onMouseOut={(e) => e.target.style.backgroundColor = '#ffffff'}
             >
               {isAdmin ? 'View as Client' : 'Admin'}
             </button>
+            
             <button
               onClick={handleLogout}
-              className="text-sm font-medium px-4 py-2 rounded border border-gray-200 hover:bg-gray-50 transition"
+              style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                padding: '0.5rem 1rem',
+                backgroundColor: '#ffffff',
+                border: '1px solid #d1d5db',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#f3f4f6'}
+              onMouseOut={(e) => e.target.style.backgroundColor = '#ffffff'}
             >
               Sign Out
             </button>
           </div>
         </div>
       </nav>
+      
       {isAdmin ? <AdminDashboard /> : <ClientDashboard />}
     </div>
   );
