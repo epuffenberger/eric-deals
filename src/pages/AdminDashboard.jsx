@@ -167,7 +167,6 @@ export default function AdminDashboard() {
         maxWidth: '1280px',
         margin: '0 auto'
       }}>
-        {/* Add Property Section */}
         <div style={{
           backgroundColor: '#ffffff',
           borderRadius: '0.5rem',
@@ -279,7 +278,7 @@ export default function AdminDashboard() {
           />
 
           <button
-            type="submit"
+            type="button"
             onClick={handleAddProperty}
             disabled={loading}
             style={{
@@ -300,7 +299,6 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {/* CSV Upload */}
           <div style={{
             borderTop: '1px solid #e5e7eb',
             marginTop: '2rem',
@@ -333,10 +331,7 @@ export default function AdminDashboard() {
                 backgroundColor: '#001a4a',
                 cursor: 'pointer',
                 transition: 'opacity 0.2s'
-              }}
-              onMouseOver={(e) => e.currentTarget.style.opacity = '0.9'}
-              onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
-              >
+              }}>
                 <Upload size={18} />
                 Choose CSV File
                 <input
@@ -356,7 +351,6 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Properties List */}
         <div>
           <h2 style={{
             fontSize: '1.875rem',
