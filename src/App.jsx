@@ -62,22 +62,6 @@ export default function App() {
             )}
             
             <button
-              onClick={() => setIsAdmin(!isAdmin)}
-              style={{
-                fontSize: '14px',
-                fontWeight: 500,
-                padding: '0.5rem 1rem',
-                backgroundColor: '#ffffff',
-                border: '1px solid #d1d5db',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                transition: 'background-color 0.2s'
-              }}
-            >
-              {isAdmin ? 'View as Client' : 'Admin'}
-            </button>
-            
-            <button
               onClick={handleLogout}
               style={{
                 fontSize: '14px',
