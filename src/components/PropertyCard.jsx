@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trash2 } from 'lucide-react';
+import { Trash2, ExternalLink } from 'lucide-react';
 
 export default function PropertyCard({ property, onDelete, isAdmin }) {
   const isMultifamily = property.type === 'multifamily';
@@ -9,13 +9,20 @@ export default function PropertyCard({ property, onDelete, isAdmin }) {
 
   return (
     <div style={{ backgroundColor: '#ffffff', borderRadius: '0.5rem', border: '1px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', transition: 'box-shadow 0.2s' }} onMouseOver={(e) => e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)'} onMouseOut={(e) => e.currentTarget.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)'}>
-      <div style={{ height: '160px', background: bgGradient, display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid #e5e7eb' }}>
-        <div style={{ textAlign: 'center', color: '#9ca3af', fontSize: '14px' }}>
-          Property Image
+      
+      {/* Image */}
+      {property.imageUrl ? (
+        <img src={property.imageUrl} alt={property.address} style={{ width: '100%', height: '160px', objectFit: 'cover' }} />
+      ) : (
+        <div style={{ height: '160px', background: bgGradient, display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid #e5e7eb' }}>
+          <div style={{ textAlign: 'center', color: '#9ca3af', fontSize: '14px' }}>
+            Property Image
+          </div>
         </div>
-      </div>
+      )}
 
       <div style={{ padding: '1.25rem' }}>
+        {/* Header */}
         <div style={{ marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #f3f4f6' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '0.5rem' }}>
             <div style={{ flex: 1 }}>
@@ -39,6 +46,7 @@ export default function PropertyCard({ property, onDelete, isAdmin }) {
           </div>
         </div>
 
+        {/* Key Metrics */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #f3f4f6' }}>
           <div>
             <p style={{ fontSize: '12px', color: '#6b7280', margin: '0 0 0.25rem 0' }}>Beds</p>
@@ -62,6 +70,7 @@ export default function PropertyCard({ property, onDelete, isAdmin }) {
           </div>
         </div>
 
+        {/* Taxes */}
         {property.taxes && (
           <div style={{ marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #f3f4f6' }}>
             <p style={{ fontSize: '12px', color: '#6b7280', margin: '0 0 0.25rem 0' }}>Annual Taxes</p>
@@ -69,6 +78,7 @@ export default function PropertyCard({ property, onDelete, isAdmin }) {
           </div>
         )}
 
+        {/* Notes */}
         {property.notes && (
           <div style={{ marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #f3f4f6' }}>
             <p style={{ fontSize: '12px', fontWeight: 500, color: '#6b7280', margin: '0 0 0.5rem 0' }}>
@@ -80,6 +90,45 @@ export default function PropertyCard({ property, onDelete, isAdmin }) {
           </div>
         )}
 
+        {/* Links */}
+        {property.links && property.links.length > 0 && (
+          <div style={{ marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #f3f4f6' }}>
+            <p style={{ fontSize: '12px', fontWeight: 500, color: '#6b7280', margin: '0 0 0.5rem 0' }}>
+              Quick Links
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {property.links.map((link, index) => (
+                <a
+                  key={index}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.5rem 0.75rem',
+                    backgroundColor: '#eff6ff',
+                    color: '#0052cc',
+                    textDecoration: 'none',
+                    borderRadius: '0.375rem',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    border: '1px solid #bfdbfe',
+                    transition: 'background-color 0.2s'
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#dbeafe'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#eff6ff'}
+                >
+                  {link.label || 'Link'}
+                  <ExternalLink size={12} />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Delete Button (Admin Only) */}
         {isAdmin && (
           <button onClick={() => onDelete(property.id)} style={{ width: '100%', padding: '0.5rem 0.75rem', fontSize: '14px', fontWeight: 500, color: '#dc2626', backgroundColor: '#ffffff', border: '1px solid #fecaca', borderRadius: '0.375rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', transition: 'background-color 0.2s' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#fee2e2'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#ffffff'}>
             <Trash2 size={16} />
