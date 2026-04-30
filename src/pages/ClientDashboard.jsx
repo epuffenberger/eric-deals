@@ -48,7 +48,6 @@ export default function ClientDashboard() {
         maxWidth: '1280px',
         margin: '0 auto'
       }}>
-        {/* Header */}
         <div style={{ marginBottom: '2rem' }}>
           <h1 style={{
             fontSize: '1.875rem',
@@ -67,7 +66,6 @@ export default function ClientDashboard() {
           </p>
         </div>
 
-        {/* Filter Buttons */}
         {properties.length > 0 && (
           <div style={{
             display: 'flex',
@@ -102,7 +100,6 @@ export default function ClientDashboard() {
           </div>
         )}
 
-        {/* Properties Grid */}
         {filteredProperties.length === 0 ? (
           <div style={{
             backgroundColor: '#ffffff',
