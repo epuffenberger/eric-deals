@@ -73,8 +73,6 @@ export default function App() {
                 cursor: 'pointer',
                 transition: 'background-color 0.2s'
               }}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#f3f4f6'}
-              onMouseOut={(e) => e.target.style.backgroundColor = '#ffffff'}
             >
               {isAdmin ? 'View as Client' : 'Admin'}
             </button>
@@ -91,8 +89,6 @@ export default function App() {
                 cursor: 'pointer',
                 transition: 'background-color 0.2s'
               }}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#f3f4f6'}
-              onMouseOut={(e) => e.target.style.backgroundColor = '#ffffff'}
             >
               Sign Out
             </button>
