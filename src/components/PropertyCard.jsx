@@ -11,8 +11,8 @@ export default function PropertyCard({ property, onDelete, isAdmin }) {
     <div style={{ backgroundColor: '#ffffff', borderRadius: '0.5rem', border: '1px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', transition: 'box-shadow 0.2s' }} onMouseOver={(e) => e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)'} onMouseOut={(e) => e.currentTarget.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)'}>
       
       {/* Image */}
-      {property.imageUrl ? (
-        <img src={property.imageUrl} alt={property.address} style={{ width: '100%', height: '160px', objectFit: 'cover' }} />
+      {property.imageBase64 ? (
+        <img src={property.imageBase64} alt={property.address} style={{ width: '100%', height: '160px', objectFit: 'cover' }} />
       ) : (
         <div style={{ height: '160px', background: bgGradient, display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid #e5e7eb' }}>
           <div style={{ textAlign: 'center', color: '#9ca3af', fontSize: '14px' }}>
