@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { db, storage } from '../firebase';
+import { db } from '../firebase';
 import { collection, addDoc, onSnapshot, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import PropertyCard from '../components/PropertyCard';
 import { Upload, Plus, X } from 'lucide-react';
 
@@ -17,7 +16,7 @@ export default function AdminDashboard() {
     taxes: '',
     notes: '',
     type: 'single-family',
-    image: null,
+    imageBase64: null,
     imagePreview: null,
     links: []
   });
@@ -51,7 +50,7 @@ export default function AdminDashboard() {
       reader.onloadend = () => {
         setFormData(prev => ({
           ...prev,
-          image: file,
+          imageBase64: reader.result,
           imagePreview: reader.result
         }));
       };
@@ -77,7 +76,7 @@ export default function AdminDashboard() {
       reader.onloadend = () => {
         setFormData(prev => ({
           ...prev,
-          image: file,
+          imageBase64: reader.result,
           imagePreview: reader.result
         }));
       };
@@ -113,15 +112,6 @@ export default function AdminDashboard() {
     setLoading(true);
 
     try {
-      let imageUrl = null;
-
-      // Upload image to Firebase Storage if provided
-      if (formData.image) {
-        const storageRef = ref(storage, `properties/${Date.now()}-${formData.image.name}`);
-        await uploadBytes(storageRef, formData.image);
-        imageUrl = await getDownloadURL(storageRef);
-      }
-
       // Filter out empty links
       const validLinks = formData.links.filter(link => link.url.trim() !== '');
 
@@ -135,7 +125,7 @@ export default function AdminDashboard() {
         taxes: parseInt(formData.taxes) || 0,
         notes: formData.notes,
         type: formData.type,
-        imageUrl: imageUrl,
+        imageBase64: formData.imageBase64,
         links: validLinks,
         createdAt: new Date()
       });
@@ -150,7 +140,7 @@ export default function AdminDashboard() {
         taxes: '',
         notes: '',
         type: 'single-family',
-        image: null,
+        imageBase64: null,
         imagePreview: null,
         links: []
       });
@@ -158,7 +148,7 @@ export default function AdminDashboard() {
       setTimeout(() => setCsvMessage(''), 3000);
     } catch (error) {
       console.error('Error adding property:', error);
-      setCsvMessage('Error adding property');
+      setCsvMessage('Error adding property: ' + error.message);
     }
     setLoading(false);
   };
@@ -306,7 +296,7 @@ export default function AdminDashboard() {
                 <img src={formData.imagePreview} alt="Preview" style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '0.375rem', border: '1px solid #e5e7eb' }} />
                 <button
                   type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, image: null, imagePreview: null }))}
+                  onClick={() => setFormData(prev => ({ ...prev, imageBase64: null, imagePreview: null }))}
                   style={{ marginTop: '0.5rem', padding: '0.5rem 1rem', backgroundColor: '#fee2e2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: '0.375rem', cursor: 'pointer' }}
                 >
                   Remove Image
@@ -361,7 +351,7 @@ export default function AdminDashboard() {
             {loading ? 'Adding...' : 'Add Property'}
           </button>
 
-          {csvMessage && <div style={{ marginTop: '1rem', fontSize: '14px', color: '#059669' }}>{csvMessage}</div>}
+          {csvMessage && <div style={{ marginTop: '1rem', fontSize: '14px', color: csvMessage.includes('Error') ? '#dc2626' : '#059669' }}>{csvMessage}</div>}
 
           {/* CSV Upload */}
           <div style={{ borderTop: '1px solid #e5e7eb', marginTop: '2rem', paddingTop: '2rem' }}>
