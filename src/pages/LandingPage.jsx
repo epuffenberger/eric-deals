@@ -20,18 +20,55 @@ export default function LandingPage({ onLogin }) {
   };
 
   return (
-    <div className="min-h-screen bg-white flex">
-      {/* Left: Signup Form */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 py-12 sm:px-12 lg:px-16">
-        <div className="w-full max-w-md mx-auto">
-          <div className="mb-12">
-            <h1 className="text-4xl font-semibold mb-2" style={{ color: '#001a4a' }}>Eric's Deals</h1>
-            <p className="text-gray-600">Exclusive weekly real estate opportunities</p>
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: '#ffffff',
+      display: 'flex',
+      fontFamily: 'system-ui, -apple-system, sans-serif'
+    }}>
+      {/* Left Side - Login Form */}
+      <div style={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: '3rem 1.5rem',
+        '@media (min-width: 1024px)': {
+          width: '50%'
+        }
+      }}>
+        <div style={{
+          width: '100%',
+          maxWidth: '28rem',
+          margin: '0 auto'
+        }}>
+          <div style={{ marginBottom: '3rem' }}>
+            <h1 style={{
+              fontSize: '2.25rem',
+              fontWeight: 600,
+              color: '#001a4a',
+              margin: '0 0 0.5rem 0'
+            }}>
+              Eric's Deals
+            </h1>
+            <p style={{
+              color: '#6b7280',
+              margin: 0,
+              fontSize: '16px'
+            }}>
+              Exclusive weekly real estate opportunities
+            </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
+              <label style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: 500,
+                color: '#111827',
+                marginBottom: '0.5rem'
+              }}>
                 Access Code
               </label>
               <input
@@ -39,82 +76,243 @@ export default function LandingPage({ onLogin }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter access code"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 1rem',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '0.5rem',
+                  fontSize: '16px',
+                  boxSizing: 'border-box'
+                }}
                 disabled={loading}
                 autoFocus
               />
             </div>
 
             {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-700">{error}</p>
+              <div style={{
+                padding: '0.75rem',
+                backgroundColor: '#fee2e2',
+                border: '1px solid #fecaca',
+                borderRadius: '0.5rem'
+              }}>
+                <p style={{
+                  fontSize: '14px',
+                  color: '#b91c1c',
+                  margin: 0
+                }}>
+                  {error}
+                </p>
               </div>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 px-4 rounded-lg font-medium text-white transition disabled:opacity-50"
-              style={{ backgroundColor: '#001a4a' }}
+              style={{
+                width: '100%',
+                padding: '0.75rem 1rem',
+                borderRadius: '0.5rem',
+                fontWeight: 500,
+                color: '#ffffff',
+                backgroundColor: '#001a4a',
+                border: 'none',
+                fontSize: '16px',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: loading ? 0.5 : 1,
+                transition: 'opacity 0.2s'
+              }}
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <p className="text-xs text-gray-500 text-center">
+          <div style={{
+            marginTop: '2rem',
+            paddingTop: '2rem',
+            borderTop: '1px solid #e5e7eb'
+          }}>
+            <p style={{
+              fontSize: '12px',
+              color: '#6b7280',
+              textAlign: 'center',
+              margin: 0
+            }}>
               Don't have access? Contact Eric for an exclusive invite.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Right: Preview */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-gray-50 to-gray-100 flex-col justify-center px-12">
-        <div className="max-w-md">
-          <h2 className="text-3xl font-semibold text-gray-900 mb-6">Weekly deals from Eric</h2>
-          <p className="text-gray-600 mb-12">Get exclusive access to hand-picked real estate opportunities before they hit the market.</p>
+      {/* Right Side - Preview (Hidden on mobile) */}
+      <div style={{
+        display: 'none',
+        width: '50%',
+        background: 'linear-gradient(to bottom right, #f3f4f6, #e5e7eb)',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: '3rem',
+        '@media (min-width: 1024px)': {
+          display: 'flex'
+        }
+      }}>
+        <div style={{ maxWidth: '28rem' }}>
+          <h2 style={{
+            fontSize: '1.875rem',
+            fontWeight: 600,
+            color: '#111827',
+            marginBottom: '1.5rem'
+          }}>
+            Weekly deals from Eric
+          </h2>
+          
+          <p style={{
+            color: '#4b5563',
+            marginBottom: '3rem',
+            lineHeight: '1.6'
+          }}>
+            Get exclusive access to hand-picked real estate opportunities before they hit the market.
+          </p>
 
-          {/* Preview Cards */}
-          <div className="space-y-4">
-            {/* Single Family Card */}
-            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition">
-              <div className="h-32 bg-gradient-to-br from-blue-50 to-blue-100"></div>
-              <div className="p-4">
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <h3 className="font-semibold text-gray-900 text-sm">123 Main Street</h3>
-                    <p className="text-xs text-gray-500">Single Family</p>
-                  </div>
-                  <span className="font-semibold text-gray-900">$450K</span>
+          {/* Preview Card 1 */}
+          <div style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '0.5rem',
+            border: '1px solid #d1d5db',
+            overflow: 'hidden',
+            marginBottom: '1rem',
+            transition: 'box-shadow 0.2s'
+          }}>
+            <div style={{
+              height: '128px',
+              background: 'linear-gradient(135deg, #dbeafe, #bfdbfe)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}></div>
+            <div style={{ padding: '1rem' }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                marginBottom: '0.75rem'
+              }}>
+                <div>
+                  <h3 style={{
+                    fontWeight: 600,
+                    color: '#111827',
+                    fontSize: '14px',
+                    margin: '0 0 0.25rem 0'
+                  }}>
+                    123 Main Street
+                  </h3>
+                  <p style={{
+                    fontSize: '12px',
+                    color: '#6b7280',
+                    margin: 0
+                  }}>
+                    Single Family
+                  </p>
                 </div>
-                <div className="grid grid-cols-2 gap-3 text-xs">
-                  <div><p className="text-gray-500">Beds</p><p className="font-medium text-gray-900">4</p></div>
-                  <div><p className="text-gray-500">Baths</p><p className="font-medium text-gray-900">2</p></div>
-                </div>
+                <span style={{
+                  fontWeight: 600,
+                  color: '#111827',
+                  fontSize: '14px'
+                }}>
+                  $450K
+                </span>
               </div>
-            </div>
-
-            {/* Multifamily Card */}
-            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition">
-              <div className="h-32 bg-gradient-to-br from-emerald-50 to-emerald-100"></div>
-              <div className="p-4">
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <h3 className="font-semibold text-gray-900 text-sm">456 Oak Avenue</h3>
-                    <p className="text-xs text-gray-500">Multifamily</p>
-                  </div>
-                  <span className="font-semibold text-gray-900">$850K</span>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '0.75rem',
+                fontSize: '12px'
+              }}>
+                <div>
+                  <p style={{ color: '#6b7280', margin: 0 }}>Beds</p>
+                  <p style={{ fontWeight: 600, color: '#111827', margin: '0.25rem 0 0 0' }}>4</p>
                 </div>
-                <div className="grid grid-cols-2 gap-3 text-xs">
-                  <div><p className="text-gray-500">Units</p><p className="font-medium text-gray-900">8</p></div>
-                  <div><p className="text-gray-500">Cap Rate</p><p className="font-medium text-gray-900">6.2%</p></div>
+                <div>
+                  <p style={{ color: '#6b7280', margin: 0 }}>Baths</p>
+                  <p style={{ fontWeight: 600, color: '#111827', margin: '0.25rem 0 0 0' }}>2</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <p className="text-xs text-gray-500 mt-6">Sign in above to view all available opportunities</p>
+          {/* Preview Card 2 */}
+          <div style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '0.5rem',
+            border: '1px solid #d1d5db',
+            overflow: 'hidden',
+            marginBottom: '1.5rem',
+            transition: 'box-shadow 0.2s'
+          }}>
+            <div style={{
+              height: '128px',
+              background: 'linear-gradient(135deg, #dcfce7, #bbf7d0)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}></div>
+            <div style={{ padding: '1rem' }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                marginBottom: '0.75rem'
+              }}>
+                <div>
+                  <h3 style={{
+                    fontWeight: 600,
+                    color: '#111827',
+                    fontSize: '14px',
+                    margin: '0 0 0.25rem 0'
+                  }}>
+                    456 Oak Avenue
+                  </h3>
+                  <p style={{
+                    fontSize: '12px',
+                    color: '#6b7280',
+                    margin: 0
+                  }}>
+                    Multifamily
+                  </p>
+                </div>
+                <span style={{
+                  fontWeight: 600,
+                  color: '#111827',
+                  fontSize: '14px'
+                }}>
+                  $850K
+                </span>
+              </div>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '0.75rem',
+                fontSize: '12px'
+              }}>
+                <div>
+                  <p style={{ color: '#6b7280', margin: 0 }}>Units</p>
+                  <p style={{ fontWeight: 600, color: '#111827', margin: '0.25rem 0 0 0' }}>8</p>
+                </div>
+                <div>
+                  <p style={{ color: '#6b7280', margin: 0 }}>Cap Rate</p>
+                  <p style={{ fontWeight: 600, color: '#111827', margin: '0.25rem 0 0 0' }}>6.2%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p style={{
+            fontSize: '12px',
+            color: '#6b7280',
+            margin: 0
+          }}>
+            Sign in above to view all available opportunities
+          </p>
         </div>
       </div>
     </div>
