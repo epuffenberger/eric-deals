@@ -4,8 +4,6 @@ import { collection, addDoc, onSnapshot, deleteDoc, doc, query, orderBy } from '
 import PropertyCard from '../components/PropertyCard';
 import { Upload } from 'lucide-react';
 
-const COLORS = ['blue', 'emerald'];
-
 export default function AdminDashboard() {
   const [properties, setProperties] = useState([]);
   const [formData, setFormData] = useState({
@@ -137,143 +135,255 @@ export default function AdminDashboard() {
     reader.readAsText(file);
   };
 
+  const inputStyle = {
+    width: '100%',
+    padding: '0.75rem',
+    border: '1px solid #d1d5db',
+    borderRadius: '0.375rem',
+    fontSize: '16px',
+    boxSizing: 'border-box'
+  };
+
+  const buttonStyle = {
+    width: '100%',
+    padding: '0.75rem 1rem',
+    borderRadius: '0.375rem',
+    fontWeight: 500,
+    color: '#ffffff',
+    backgroundColor: '#001a4a',
+    border: 'none',
+    fontSize: '16px',
+    cursor: 'pointer',
+    transition: 'opacity 0.2s'
+  };
+
   return (
-    <div className="bg-gray-50 min-h-screen py-12">
-      <div className="max-w-7xl mx-auto px-6">
+    <div style={{
+      backgroundColor: '#f9fafb',
+      minHeight: '100vh',
+      padding: '3rem 1.5rem'
+    }}>
+      <div style={{
+        maxWidth: '1280px',
+        margin: '0 auto'
+      }}>
         {/* Add Property Section */}
-        <div className="bg-white rounded-lg border border-gray-200 p-8 mb-12">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Add New Property</h2>
+        <div style={{
+          backgroundColor: '#ffffff',
+          borderRadius: '0.5rem',
+          border: '1px solid #e5e7eb',
+          padding: '2rem',
+          marginBottom: '3rem'
+        }}>
+          <h2 style={{
+            fontSize: '1.875rem',
+            fontWeight: 600,
+            color: '#111827',
+            marginBottom: '1.5rem',
+            margin: 0
+          }}>
+            Add New Property
+          </h2>
 
-          <form onSubmit={handleAddProperty} className="space-y-6 mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <input
-                type="text"
-                name="address"
-                placeholder="Street Address"
-                value={formData.address}
-                onChange={handleInputChange}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-
-              <select
-                name="type"
-                value={formData.type}
-                onChange={handleInputChange}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="single-family">Single Family</option>
-                <option value="multifamily">Multifamily</option>
-              </select>
-
-              <input
-                type="number"
-                name="beds"
-                placeholder="Bedrooms"
-                value={formData.beds}
-                onChange={handleInputChange}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-
-              <input
-                type="number"
-                name="baths"
-                placeholder="Bathrooms"
-                value={formData.baths}
-                onChange={handleInputChange}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-
-              <input
-                type="number"
-                name="sqft"
-                placeholder="Square Footage"
-                value={formData.sqft}
-                onChange={handleInputChange}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-
-              <input
-                type="number"
-                name="price"
-                placeholder="Price"
-                value={formData.price}
-                onChange={handleInputChange}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-
-              <input
-                type="text"
-                name="rentRate"
-                placeholder="Monthly Rent Rate"
-                value={formData.rentRate}
-                onChange={handleInputChange}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-
-              <input
-                type="number"
-                name="taxes"
-                placeholder="Annual Property Taxes"
-                value={formData.taxes}
-                onChange={handleInputChange}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <textarea
-              name="notes"
-              placeholder="Your notes about this property"
-              value={formData.notes}
+          <form onSubmit={handleAddProperty} style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '1.5rem',
+            marginBottom: '2rem'
+          }}>
+            <input
+              type="text"
+              name="address"
+              placeholder="Street Address"
+              value={formData.address}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              rows="3"
+              style={inputStyle}
+              required
             />
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 px-4 rounded-lg font-medium text-white transition disabled:opacity-50"
-              style={{ backgroundColor: '#001a4a' }}
+            <select
+              name="type"
+              value={formData.type}
+              onChange={handleInputChange}
+              style={inputStyle}
             >
-              {loading ? 'Adding...' : 'Add Property'}
-            </button>
+              <option value="single-family">Single Family</option>
+              <option value="multifamily">Multifamily</option>
+            </select>
+
+            <input
+              type="number"
+              name="beds"
+              placeholder="Bedrooms"
+              value={formData.beds}
+              onChange={handleInputChange}
+              style={inputStyle}
+            />
+
+            <input
+              type="number"
+              name="baths"
+              placeholder="Bathrooms"
+              value={formData.baths}
+              onChange={handleInputChange}
+              style={inputStyle}
+            />
+
+            <input
+              type="number"
+              name="sqft"
+              placeholder="Square Footage"
+              value={formData.sqft}
+              onChange={handleInputChange}
+              style={inputStyle}
+            />
+
+            <input
+              type="number"
+              name="price"
+              placeholder="Price"
+              value={formData.price}
+              onChange={handleInputChange}
+              style={inputStyle}
+            />
+
+            <input
+              type="text"
+              name="rentRate"
+              placeholder="Monthly Rent Rate"
+              value={formData.rentRate}
+              onChange={handleInputChange}
+              style={inputStyle}
+            />
+
+            <input
+              type="number"
+              name="taxes"
+              placeholder="Annual Property Taxes"
+              value={formData.taxes}
+              onChange={handleInputChange}
+              style={inputStyle}
+            />
           </form>
 
+          <textarea
+            name="notes"
+            placeholder="Your notes about this property"
+            value={formData.notes}
+            onChange={handleInputChange}
+            style={{
+              ...inputStyle,
+              marginBottom: '1.5rem',
+              minHeight: '100px'
+            }}
+          />
+
+          <button
+            type="submit"
+            onClick={handleAddProperty}
+            disabled={loading}
+            style={{
+              ...buttonStyle,
+              opacity: loading ? 0.5 : 1
+            }}
+          >
+            {loading ? 'Adding...' : 'Add Property'}
+          </button>
+
+          {csvMessage && (
+            <div style={{
+              marginTop: '1rem',
+              fontSize: '14px',
+              color: '#059669'
+            }}>
+              {csvMessage}
+            </div>
+          )}
+
           {/* CSV Upload */}
-          <div className="border-t border-gray-200 pt-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Bulk Import from CSV</h3>
-            <div className="flex items-center gap-4">
-              <label className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-white cursor-pointer transition" style={{ backgroundColor: '#001a4a' }}>
+          <div style={{
+            borderTop: '1px solid #e5e7eb',
+            marginTop: '2rem',
+            paddingTop: '2rem'
+          }}>
+            <h3 style={{
+              fontSize: '1.125rem',
+              fontWeight: 600,
+              color: '#111827',
+              marginBottom: '1rem',
+              margin: 0
+            }}>
+              Bulk Import from CSV
+            </h3>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+              marginBottom: '0.5rem',
+              flexWrap: 'wrap'
+            }}>
+              <label style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.5rem 1rem',
+                borderRadius: '0.375rem',
+                fontWeight: 500,
+                color: '#ffffff',
+                backgroundColor: '#001a4a',
+                cursor: 'pointer',
+                transition: 'opacity 0.2s'
+              }}
+              onMouseOver={(e) => e.currentTarget.style.opacity = '0.9'}
+              onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
+              >
                 <Upload size={18} />
                 Choose CSV File
                 <input
                   type="file"
                   accept=".csv"
                   onChange={handleCSVUpload}
-                  className="hidden"
+                  style={{ display: 'none' }}
                 />
               </label>
-              <span className="text-sm text-gray-600">Format: address,beds,baths,sqft,price,rentrate,taxes,type,notes</span>
+              <span style={{
+                fontSize: '14px',
+                color: '#6b7280'
+              }}>
+                Format: address,beds,baths,sqft,price,rentrate,taxes,type,notes
+              </span>
             </div>
-            {csvMessage && (
-              <div className="mt-3 text-sm text-gray-700">
-                {csvMessage}
-              </div>
-            )}
           </div>
         </div>
 
         {/* Properties List */}
         <div>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Current Properties ({properties.length})</h2>
+          <h2 style={{
+            fontSize: '1.875rem',
+            fontWeight: 600,
+            color: '#111827',
+            marginBottom: '1.5rem',
+            margin: 0
+          }}>
+            Current Properties ({properties.length})
+          </h2>
 
           {properties.length === 0 ? (
-            <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-              <p className="text-gray-600">No properties yet. Add your first deal above!</p>
+            <div style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '0.5rem',
+              border: '1px solid #e5e7eb',
+              padding: '3rem',
+              textAlign: 'center'
+            }}>
+              <p style={{ color: '#6b7280', margin: 0 }}>No properties yet. Add your first deal above!</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+              gap: '1.5rem'
+            }}>
               {properties.map(property => (
                 <PropertyCard
                   key={property.id}
